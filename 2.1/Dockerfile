@@ -26,4 +26,4 @@ COPY config/ ${PORTUS_CONFIG_PATH}
 RUN mkdir ${PORTUS_CONFIG_PATH}/certs && \
   cp vagrant/conf/ca_bundle/server.key vagrant/conf/ca_bundle/server.crt ${PORTUS_CONFIG_PATH}/certs
 
-CMD puma
+CMD ./config/prepare.sh && puma
