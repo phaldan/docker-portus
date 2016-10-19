@@ -4,6 +4,10 @@
 |Variable|Default|
 |--------|-------|
 |PORTUS_CHECK_SSL_USAGE_ENABLED|true|
+|PORTUS_DB_HOST|127.0.0.1|
+|PORTUS_DB_NAME|portus|
+|PORTUS_DB_PASSWORD|portus|
+|PORTUS_DB_USERNAME|root|
 |PORTUS_DELETE_ENABLED|false|
 |PORTUS_DISPLAY_NAME_ENABLED|false|
 |PORTUS_EMAIL_FROM|portus@example.com|

@@ -1,0 +1,8 @@
+production:
+  adapter: mysql2
+  encoding: utf8
+  host: <%= ENV["PORTUS_DB_HOST"] || '127.0.0.1' %>
+  username: <%= ENV["PORTUS_DB_USERNAME"] || "root" %>
+  password: <%= ENV["PORTUS_DB_PASSWORD"] || "portus" %>
+  database: <%= ENV["PORTUS_DB_NAME"] || "portus" %>
+

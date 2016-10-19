@@ -3,8 +3,18 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-main() {
-  file="config/config.yml"
+main() {  
+  debug "Prepare started"
+
+  mapEnvToConfig "config/config.yml"
+  createDb
+
+  debug "Prepare finished"
+}
+
+mapEnvToConfig() {
+  file="${1}"
+  debug "Map environment variables to ${file}"
 
   replaceByEnv $file "PORTUS_EMAIL_FROM" "portus@example.com"
   replaceByEnv $file "PORTUS_EMAIL_NAME" "Portus"
@@ -41,18 +51,31 @@ main() {
   replaceByEnv $file "PORTUS_USER_PERMISSION_MANAGE_NAMESPACE_ENABLED" "true"
 }
 
+createDb() {
+  debug "Create DB if not exists"
+  yes "" | rake db:create 2> /dev/null || true
+}
+
+debug() {
+  output="${1}"
+
+  if [ "${DEBUG:-0}" -eq "1" ]; then
+    echo "[$(date +'%F %X %z')]: ${output}" 
+  fi
+}
+
 replaceByEnv() {
-  file=${1}
-  env_var=${2}
-  default=${3}
+  file="${1}"
+  env_var="${2}"
+  default="${3}"
 
   replace $file "${env_var}" "${!env_var:-$default}"
 }
 
 replace() {
-  file=${1}
-  search=${2}
-  replace=${3}
+  file="${1}"
+  search="${2}"
+  replace="${3}"
 
   sed -i "s#${search}#${replace}#" ${file}
 }
