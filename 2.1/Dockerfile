@@ -6,25 +6,21 @@ ENV PORTUS_VERSION=2.1.1 \
     PORTUS_PATH=/portus \
     PORTUS_CONFIG_PATH=/portus/config \
     RACK_ENV=production \
-    RAILS_ENV=production
+    RAILS_ENV=production \
+    BUNDLE_GEMFILE=/portus/Gemfile
 
 WORKDIR ${PORTUS_PATH}
 
-# DEPENDENCIES
+# RUNTIME DEPENDENCIES
 RUN set -ex && \
   apt-get update && \
   apt-get install -y --no-install-recommends nodejs && \
   rm -rf /var/lib/apt/lists/*
 
-# INSTALL
-RUN set -ex && \
-  wget -qO- "https://github.com/SUSE/Portus/archive/${PORTUS_VERSION}.tar.gz" | tar -xvz --strip-components=1 && \
-  bundle install --retry=3
+COPY *.sh ${PORTUS_PATH}/bin/
 
-# CONFIG
-COPY config/ ${PORTUS_CONFIG_PATH}
-RUN mkdir ${PORTUS_CONFIG_PATH}/certs && \
-  cp vagrant/conf/ca_bundle/server.key vagrant/conf/ca_bundle/server.crt ${PORTUS_CONFIG_PATH}/certs
+RUN bin/install.sh
 
-COPY ./*.sh ${PORTUS_PATH}
-CMD ./prepare.sh && puma
+COPY *.yml puma.rb ${PORTUS_CONFIG_PATH}/
+
+CMD exec bin/run.sh
