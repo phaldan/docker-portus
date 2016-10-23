@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 set -o errexit
 set -o pipefail
 set -o nounset
@@ -16,7 +16,8 @@ install() {
   # Fix missing gems without dev
   sed -i '/gem "md2man"/d' ${BUNDLE_GEMFILE}
   sed -i '/gem "puma"/d' ${BUNDLE_GEMFILE}
-  echo -e "gem \"md2man\", \"~>5.1.1\", require: false\ngem \"puma\"" >> ${BUNDLE_GEMFILE}
+  echo 'gem "md2man", "~>5.1.1", require: false' >> ${BUNDLE_GEMFILE}
+  echo 'gem "puma"' >> ${BUNDLE_GEMFILE}
 
   bundle config --local build.nokogiri --use-system-libraries # Fix broken nokogiri build
   bundle install --jobs=4 --retry=3 --no-cache --clean --deployment --without test development

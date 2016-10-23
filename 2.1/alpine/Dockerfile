@@ -14,6 +14,7 @@ WORKDIR ${PORTUS_PATH}
 # RUNTIME DEPENDENCIES
 RUN set -ex && \
   apk add --no-cache \
+    bash \
     nodejs-lts \
     libxslt \
     mariadb-client-libs \

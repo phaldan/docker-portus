@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 set -o errexit
 set -o pipefail
 set -o nounset
@@ -22,7 +22,7 @@ main() {
   debug "Starting synchronisation - ${crono_pid}"
 
   wait ${puma_pid}
-  kill -s SIGKILL ${crono_pid}
+  kill ${crono_pid}
 }
 
 debug() {
@@ -34,8 +34,7 @@ debug() {
 
 shutdown() {
   debug "Shutdown portus - ${puma_pid} ${crono_pid}"
-  kill -s SIGTERM ${puma_pid}
-  kill -s SIGKILL ${crono_pid}
+  kill ${puma_pid} ${crono_pid}
   sleep 1
   exit 0
 }
